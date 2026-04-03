@@ -11,7 +11,7 @@
 ### 🎯 Visão Geral & Valor de Negócio
 Este motor é um sistema distribuído de Inteligência Artificial desenhado para resolver o problema de **Revenue Leakage** em operações B2B. Ele substitui auditorias manuais por um pipeline **determinístico** que cruza restrições jurídicas (PDF) com telemetria transacional (Logs).
 
-**O diferencial sênior**: Diferente de RAGs comuns, este sistema utiliza **Raciocínio Temporal** e **Injeção de Dependência** para garantir que a lógica de auditoria seja portável entre ambientes locais (DuckDB) e corporativos (Snowflake/Databricks).
+**O diferencial**: Diferente de RAGs comuns, este sistema utiliza **Raciocínio Temporal** e **Injeção de Dependência** para garantir que a lógica de auditoria seja portável entre ambientes locais (DuckDB) e corporativos (Snowflake/Databricks).
 
 ### 🏗️ Diferenciais de Engenharia
 - **Decoupled Action (MCP)**: Implementação do Model Context Protocol para separar o raciocínio do modelo da execução de ferramentas.
@@ -24,7 +24,7 @@ Este motor é um sistema distribuído de Inteligência Artificial desenhado para
 ### 🎯 Overview & Business Value
 An AI-driven engine designed to solve **Revenue Leakage** in high-complexity B2B operations. It replaces manual audits with a **deterministic pipeline** that bridges the gap between Unstructured Legal Contracts and Structured Operational Telemetry.
 
-**The Senior Edge**: Unlike standard RAGs, this system employs **Temporal Reasoning** and **Dependency Injection** to ensure the audit logic is portable across local environments (DuckDB) and enterprise warehouses (Snowflake/Databricks).
+**The Edge**: Unlike standard RAGs, this system employs **Temporal Reasoning** and **Dependency Injection** to ensure the audit logic is portable across local environments (DuckDB) and enterprise warehouses (Snowflake/Databricks).
 
 ### 🏗️ Engineering Highlights
 - **Decoupled Action (MCP)**: Built using the Model Context Protocol to strictly separate model reasoning from tool execution.
