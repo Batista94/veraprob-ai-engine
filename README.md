@@ -1,69 +1,98 @@
-# Autonomous SLA Reconciliation Engine - VeraProb
-> **Deterministic Multi-Agent System for B2B Contract Audit & Temporal Reconciliation**
+# Autonomous SLA Reconciliation Engine — VeraProb
+**Deterministic Multi-Agent System for B2B Contract Audit & Temporal Reconciliation**
 
-[![Python](https://img.shields.io/badge/Python-3.11%2B-blue)](https://python.org)
-[![Architecture](https://img.shields.io/badge/Architecture-Event--Driven%20State%20Machine-orange)]()
-[![Data Engine](https://img.shields.io/badge/Data-DuckDB%20%7C%20Polars-black)]()
-
-Este motor é um sistema distribuído de Inteligência Artificial desenhado para resolver o problema de **Revenue Leakage** em operações B2B de alta complexidade (TI, Telecom, Logística). Ele substitui processos de auditoria manual por um pipeline determinístico que cruza restrições jurídicas não-estruturadas com telemetria transacional de alto volume.
+[🇺S English](#english) | [🇧🇷 Português](#português)
 
 ---
 
-## Escopo do Sistema & Valor de Negócio (The "Why")
+<a name="português"></a>
+## 🇧🇷 Português
 
-Em contratos Enterprise, os Acordos de Nível de Serviço (SLAs) possuem condicionais complexas (ex: *janelas de manutenção, multas exponenciais, exceções de feriados*). RAGs tradicionais falham miseravelmente nisso porque carecem de raciocínio lógico-temporal e precisão matemática.
+### 🎯 Visão Geral & Valor de Negócio
+Este motor é um sistema distribuído de Inteligência Artificial desenhado para resolver o problema de **Revenue Leakage** em operações B2B. Ele substitui auditorias manuais por um pipeline **determinístico** que cruza restrições jurídicas (PDF) com telemetria transacional (Logs).
 
-**Este motor garante:**
-1. **Tradução Jurídica para Código:** Converte cláusulas textuais (PDF) em schemas fortemente tipados (Pydantic V2).
-2. **Reconciliação Temporal:** Realiza *joins* complexos entre regras contratuais e logs de séries temporais (Time-Series Telemetry).
-3. **Auditabilidade Absoluta:** O sistema não gera "respostas", ele gera **Dossiês de Infração**, citando a página do contrato, a linha do log, e o cálculo matemático da multa.
+**O diferencial sênior**: Diferente de RAGs comuns, este sistema utiliza **Raciocínio Temporal** e **Injeção de Dependência** para garantir que a lógica de auditoria seja portável entre ambientes locais (DuckDB) e corporativos (Snowflake/Databricks).
 
----
+### 🏗️ Diferenciais de Engenharia
+- **Decoupled Action (MCP)**: Implementação do Model Context Protocol para separar o raciocínio do modelo da execução de ferramentas.
+- **Adapter Pattern**: Abstração completa da camada de dados. O sistema é agnóstico ao banco de dados.
+- **Human-in-the-Loop (HITL)**: Persistência de estado via SQLite para aprovação humana em infrações de alto valor.
 
-##  Arquitetura do Grafo (State Machine & HITL)
+<a name="english"></a>
+## 🇺S English
 
-O núcleo operacional não é um LLM isolado, mas uma **Máquina de Estados Finita** orquestrada via LangGraph. O fluxo garante recuperação de falhas (Fault Tolerance) e governança humana.
+### 🎯 Overview & Business Value
+An AI-driven engine designed to solve **Revenue Leakage** in high-complexity B2B operations. It replaces manual audits with a **deterministic pipeline** that bridges the gap between Unstructured Legal Contracts and Structured Operational Telemetry.
 
-### O Ciclo de Vida da Auditoria:
-1. **Ingestão Estruturada (Docling):** Quebra do PDF jurídico mantendo a integridade topológica de tabelas e cláusulas aninhadas.
-2. **Dynamic Schema Generation:** Um LLM atua como extrator, gerando um JSON Schema com as regras de SLA.
-3. **Temporal SQL Synthesis:** Um agente especializado converte o JSON Schema em *Queries SQL Dinâmicas*.
-4. **OLAP Execution (DuckDB + Polars):** A query é executada *in-memory* contra a base de logs operacionais (suporta milhões de linhas em milissegundos).
-5. **Chain of Verification (CoV):** Um agente "Crítico" revisa o output do SQL contra o texto original para evitar falsos positivos.
-6. **Human-in-the-Loop (HITL) Gate:** Se uma infração é detectada e a penalidade calculada excede o limite (Threshold) de risco, o estado do grafo é congelado. O sistema aguarda o *callback* de um operador humano para aprovar a notificação ao fornecedor.
+**The Senior Edge**: Unlike standard RAGs, this system employs **Temporal Reasoning** and **Dependency Injection** to ensure the audit logic is portable across local environments (DuckDB) and enterprise warehouses (Snowflake/Databricks).
 
----
+### 🏗️ Engineering Highlights
+- **Decoupled Action (MCP)**: Built using the Model Context Protocol to strictly separate model reasoning from tool execution.
+- **Adapter Pattern**: Complete data-layer abstraction. The engine is database-agnostic.
+- **Human-in-the-Loop (HITL)**: State persistence via SQLite, enabling human oversight for high-threshold financial penalties.
 
-## Stack Tecnológica & Decisões de Engenharia
+### 🛠️ Tech Stack
 
-| Componente | Tecnologia | Trade-off / Justificativa |
-| :--- | :--- | :--- |
-| **Orquestração de Estado** | `LangGraph` | Substitui pipelines lineares (LangChain) para permitir grafos cíclicos, persistência de estado (SQLite/Postgres) e interrupções HITL. |
-| **Parsing Documental** | `Docling` (IBM) | Supera PyPDF e Tesseract ao entender hierarquias de documentos complexos, vital para não perder o contexto de anexos de SLA. |
-| **Motor Analítico** | `DuckDB` + `Polars` | Elimina a necessidade de Data Warehouses em nuvem (Snowflake/BigQuery) para processamento OLAP local de baixo custo e altíssima velocidade. |
-| **Validação e Guardrails** | `DeepEval` + `Pydantic` | LLMs são probabilísticos; a auditoria exige determinismo. Pydantic força a estrutura, e DeepEval aplica testes unitários nas saídas semânticas. |
+| Component      | Technology       | Senior Justification                          |
+|----------------|------------------|-----------------------------------------------|
+| Orchestration  | LangGraph        | Stateful, cyclic agentic workflows with native HITL |
+| Data Engine    | DuckDB / Polars  | OLAP performance in-memory. Easily swappable via Adapters |
+| Parsing        | Docling (IBM)    | Topology-aware PDF parsing (preserving complex SLA tables) |
+| Protocol       | MCP              | Standardizes tool interaction, making the engine plug-and-play |
+| Validation     | DeepEval         | Metric-based testing for Hallucination and Faithfulness |
+| Infrastructure | Docker           | Multi-stage builds for hermetic and slim production images |
 
----
-
-##  Estratégia de MLOps e Validação
-
-Para assegurar confiabilidade em nível de produção, este repositório adota testes rigorosos:
-* **Synthetic Telemetry Generation:** Como dados reais são protegidos por NDA, o módulo `src/data_gen` cria milhares de logs sintéticos de uptime/downtime com anomalias propositais para testar a acurácia do agente.
-* **LLM-as-a-Judge:** Pipelines CI/CD rodam métricas de *Faithfulness* (Fidelidade ao PDF) e *Answer Relevancy* a cada novo PR.
-
----
-    
-## Setup Hermético (Desenvolvimento)
-
-O projeto utiliza `Poetry` para isolamento e reprodutibilidade do ambiente.
+### 🚀 Setup & Execution
+O projeto utiliza **Makefile** e **Poetry** para padronizar o ambiente de desenvolvimento.
 
 ```bash
-# Clone o repositório
-git clone [https://github.com/Batista94/veraprob-ai-engine](https://github.com/Batista94/veraprob-ai-engine.git)
+# Install dependencies
+make install
 
-# Inicialize o ambiente hermético
-cd sla-reconciliation-engine
-poetry install
+# Generate synthetic logs for testing
+poetry run python src/data_gen/generate_logs.py
 
-# Rode a suíte de testes de sanidade
-poetry run pytest tests/
+# Run the Audit Suite
+make audit
+```
+
+#### Environment Variables (`.env`)
+```bash
+OPENAI_API_KEY=sk-...
+LANGSMITH_API_KEY=ls-...
+DATA_ENGINE=duckdb # options: duckdb, snowflake_adapter
+```
+
+### 📂 Project Structure
+.
+├── src/
+│ ├── agents/ # LangGraph Nodes & State logic
+│ ├── data_engine/ # Abstract Base Classes & Adapters (DuckDB, Snowflake)
+│ ├── mcp_server/ # Model Context Protocol implementation
+│ └── parsers/ # Docling & Layout analysis logic
+├── tests/ # Unit, Integration & DeepEval (LLM-as-a-Judge)
+├── ARCHITECTURE.md # Deep dive into engineering decisions
+└── Makefile # Automation entry points
+
+
+### 🛠️ Developer Experience (DX) & Quality Assurance
+- **Local-First Development**: Setup completo em < 2 minutos via `make install`.
+- **CI Ready**: Configurado para rodar `Ruff` (linting) e `Pytest` em pipelines de integração contínua.
+- **Observability**: Integração nativa com LangSmith para debugging de traços de agentes em tempo real.
+
+---
+
+## 🗺️ Roadmap de Evolução / Evolution Roadmap
+| Fase | Feature | Status |
+|------|---------|--------|
+| 1 | Extração de métricas de Uptime e Latência (MVP) / Uptime & Latency metrics extraction | [ ] |
+| 2 | Multi-PDF context (Contrato Principal + Aditivos) / Multi-PDF context (Main + Addendums) | [ ] |
+| 3 | Interface via MCP para Claude Desktop / MCP interface for Claude Desktop | [ ] |
+| 4 | Exportação de evidências para logs imutáveis / Immutable audit trail export | [ ] |
+
+---
+
+[![stars](https://img.shields.io/github/stars/Batista94/veraprob-ai-engine?style=social)](https://github.com/Batista94/veraprob-ai-engine)
+[![license](https://img.shields.io/github/license/Batista94/veraprob-ai-engine)](LICENSE)
+[![python](https://img.shields.io/badge/Python-3.11%2B-blue)](https://www.python.org/)
+[![poetry](https://img.shields.io/badge/Poetry-1.8%2B-9356fc)](https://python-poetry.org/)
