@@ -34,7 +34,7 @@ stateDiagram-v2
     HumanInTheLoop --> Verification: Rejeição Humana (Rollback)
 ```
 
-**D. Persistência de Checkpoints**: O estado do grafo é persistido em um banco SQLite (Checkpointer). Isso permite que uma auditoria de um contrato de 500 páginas seja interrompida (ex: aguardando aprovação humana por 2 dias) e retomada exatamente do ponto onde parou, sem re-processar dados ou gastar tokens desnecessariamente.
+**Persistência de Checkpoints**: O estado do grafo é persistido em um banco SQLite (Checkpointer). Isso permite que uma auditoria de um contrato de 500 páginas seja interrompida (ex: aguardando aprovação humana por 2 dias) e retomada exatamente do ponto onde parou, sem re-processar dados ou gastar tokens desnecessariamente.
 
 ### 3. Componentes Core e Trade-offs
 #### A. Ingestão e Contexto: Por que Docling em vez de PyPDF/Tesseract?
@@ -58,7 +58,7 @@ Para garantir **desacoplamento total** entre o "Raciocínio" (LLM) e a "Ação" 
 Para evitar estourar o limite de tokens do LLM com contratos gigantes, o sistema não usa o clássico Semantic Chunking (que quebra frases ao meio).
 
 #### Structural Sharding
-O sistema divide o documento com base em cabeçalhos Markdown (## Cláusula 4). Apenas as seções classificadas previamente como "Relevantes para SLA" são enviadas para a etapa de extração profunda.
+O sistema divide o documento com base em cabeçalhos Markdown. Apenas as seções classificadas previamente como "Relevantes para SLA" são enviadas para a etapa de extração profunda.
 
 ### 6. Segurança B2B e Privacidade de Dados
 Contratos empresariais contêm dados sensíveis (PII, valores de negociação).
@@ -111,7 +111,7 @@ For **complete decoupling** between "Reasoning" (LLM) and "Action" (Tools), the 
 To avoid hitting LLM token limits with massive contracts, the system avoids classic Semantic Chunking (which breaks sentences in half).
 
 #### Structural Sharding
-The system partitions the document based on Markdown headers (## Clause 4). Only sections pre-classified as "SLA-Relevant" are forwarded to the deep extraction node.
+The system partitions the document based on Markdown headers. Only sections pre-classified as "SLA-Relevant" are forwarded to the deep extraction node.
 
 ### 6. B2B Security and Data Privacy
 Enterprise contracts contain sensitive data (PII, negotiation values).
